@@ -1,50 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:nsuns/models/cycles.dart';
+import 'package:nsuns/models/settings.dart';
 import 'package:nsuns/routes.dart';
 import 'package:nsuns/theme.dart';
-import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Settings()),
+        ChangeNotifierProvider(create: (_) => Cycles()),
+      ],
+      child: const App(),
+    ),
   );
-  runApp(App());
 }
 
-class App extends StatefulWidget {
-  // Create the initialization Future outside of `build`:
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  /// The future is part of the state of our widget. We should not call `initializeApp`
-  /// directly inside [build].
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize FlutterFire:
-      future: _initialization,
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return const Text('error', textDirection: TextDirection.ltr);
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            routes: appRoutes,
-            theme: appTheme,
-          );
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        return const Text('loading', textDirection: TextDirection.ltr);
-      },
+    return MaterialApp(
+      routes: appRoutes,
+      theme: appTheme,
     );
   }
 }

@@ -1,7 +1,7 @@
-import 'package:nsuns/cycle/cycle.dart';
-import 'package:nsuns/home/home.dart';
-import 'package:nsuns/progress/progress.dart';
-import 'package:nsuns/settings/settings.dart';
+import 'package:nsuns/cycle/cycle-screen.dart';
+import 'package:nsuns/home/home-screen.dart';
+import 'package:nsuns/progress/progress-screen.dart';
+import 'package:nsuns/settings/settings-screen.dart';
 
 var appRoutes = {
   '/': (context) => const HomeScreen(),
