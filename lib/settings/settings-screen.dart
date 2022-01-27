@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nsuns/models/excercise.dart';
+import 'package:nsuns/models/exercise.dart';
+import 'package:nsuns/models/program.dart';
 import 'package:nsuns/models/settings.dart';
-import 'package:nsuns/shared/excercise-card.dart';
+import 'package:nsuns/shared/exercise-card.dart';
 import 'package:nsuns/shared/helpers/formatters.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return AlertDialog(
           title: const Text('Reset'),
           content: const Text(
-              'Are you sure you want to reset all excercises to default?'),
+              'Are you sure you want to reset all exercises to default?'),
           actions: <Widget>[
             ElevatedButton(
               child: const Text('Cancel'),
@@ -30,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ElevatedButton(
               child: const Text('Reset'),
               onPressed: () {
-                Provider.of<Settings>(context, listen: false).resetExcercises();
+                Provider.of<Settings>(context, listen: false).resetExercises();
                 Navigator.of(context).pop();
               },
             ),
@@ -64,22 +65,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 DropdownButton(
-                  items: <String>[
-                    'Four Day',
-                    'Five Day',
-                    'Six Day Squat',
-                    'Six Day Deadlift'
-                  ].map<DropdownMenuItem<String>>(
-                    (String value) {
-                      return DropdownMenuItem<String>(
-                        value: toKebabCase(value),
-                        child: Text(value),
+                  items: <Program>[...defaultPrograms]
+                      .map<DropdownMenuItem<Program>>(
+                    (Program program) {
+                      return DropdownMenuItem<Program>(
+                        value: program,
+                        child: Text(program.name),
                       );
                     },
                   ).toList(),
-                  value: toKebabCase(settings.programTemplate),
+                  value: settings.programTemplate,
                   onChanged: (value) {
-                    settings.setProgramTemplate = value.toString();
+                    settings.setProgramTemplate = value as Program;
                   },
                   isExpanded: true,
                 ),
@@ -99,7 +96,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ).toList(),
                   onChanged: (value) {
-                    settings.setUnits = value.toString();
+                    // Check if the value has changed before updating
+                    if (value != settings.units) {
+                      settings.setUnits = value.toString();
+                      settings.updateExerciseUnits();
+                      // Update the smallest plate text field
+                      _smallestPlateController.text =
+                          settings.smallestPlate.toString();
+                    }
                   },
                   value: settings.units,
                   isExpanded: true,
@@ -109,29 +113,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Smallest Plate',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
-                TextField(
-                  decoration: const InputDecoration(
-                    hintText: 'Smallest Plate',
+                Focus(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'Smallest Plate',
+                    ),
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    onEditingComplete: () {
+                      settings.setSmallestPlate =
+                          double.parse(_smallestPlateController.text);
+                      // Lose focus
+                      FocusScope.of(context).unfocus();
+                    },
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.subtitle1,
+                    controller: _smallestPlateController,
                   ),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  onEditingComplete: () {
-                    settings.setSmallestPlate =
-                        double.parse(_smallestPlateController.text);
+                  canRequestFocus: false,
+                  onFocusChange: (hasFocus) {
+                    if (!hasFocus) {
+                      settings.setSmallestPlate =
+                          double.parse(_smallestPlateController.text);
+                      // Lose focus
+                      FocusScope.of(context).unfocus();
+                    }
                   },
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.subtitle1,
-                  controller: _smallestPlateController,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Excercises',
+                  'Exercises',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
-                ...settings.excercises.map<Widget>(
-                  (Excercise excercise) {
-                    return ExcerciseCard(
-                      excercise: excercise,
+                ...settings.exercises.map<Widget>(
+                  (Exercise exercise) {
+                    return ExerciseCard(
+                      exercise: exercise,
+                      onDelete: settings.deleteExercise,
                     );
                   },
                 ),
@@ -139,15 +157,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      child: const Text('Add Excercise'),
-                      onPressed: () {},
+                      child: const Text('Add Exercise'),
+                      onPressed: () {
+                        // Go to the exercise screen
+                        Navigator.of(context).pushNamed('/exercise');
+                      },
                     ),
                     ElevatedButton(
-                      child: const Text('Reste Excercises'),
+                      child: const Text('Reset Exercise'),
                       onPressed: _showResetDialogue,
                     ),
                   ],
-                )
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Programs',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               ],
             ),
           );

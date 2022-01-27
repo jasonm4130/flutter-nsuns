@@ -1,13 +1,13 @@
-import 'package:nsuns/models/excercise.dart';
+import 'package:nsuns/models/exercise.dart';
 
 class DataPoint {
   final DateTime date;
-  final Excercise excercise;
+  final Exercise exercise;
   final double estimated1RM;
 
   DataPoint({
     required this.date,
-    required this.excercise,
+    required this.exercise,
     this.estimated1RM = 0,
   });
 }

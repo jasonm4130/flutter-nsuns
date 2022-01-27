@@ -1,15 +1,16 @@
 class Set {
-  final int reps;
-  final int? percentageOfTrainingMax;
-  final double? weight;
-  final bool isAMRAP;
-  final int repsCompleted;
+  int reps;
+  double? percentageOfTrainingMax;
+  double? weight;
+  bool isAMRAP;
+  int? repsCompleted;
+  bool complete;
 
   Set({
     required this.reps,
     this.percentageOfTrainingMax,
     this.weight,
     this.isAMRAP = false,
-    this.repsCompleted = 0,
+    this.complete = false,
   });
 }

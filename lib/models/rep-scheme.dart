@@ -51,6 +51,49 @@ RepScheme t1RepSchemeSquat = RepScheme(
   ],
 );
 
+RepScheme t1RepSchemePress = RepScheme(
+  sets: [
+    Set(
+      reps: 5,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 85,
+    ),
+    Set(
+      reps: 1,
+      percentageOfTrainingMax: 95,
+      isAMRAP: true,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 90,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 85,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 80,
+    ),
+    Set(
+      reps: 5,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 5,
+      percentageOfTrainingMax: 70,
+    ),
+    Set(
+      reps: 5,
+      percentageOfTrainingMax: 65,
+      isAMRAP: true,
+    ),
+  ],
+);
+
 RepScheme t1RepSchemeBench = RepScheme(
   sets: [
     Set(
@@ -212,6 +255,73 @@ RepScheme t2RepScheme = RepScheme(
     Set(
       reps: 8,
       percentageOfTrainingMax: 70,
+    ),
+  ],
+);
+
+RepScheme t1LowerBodyDayTwo = RepScheme(
+  sets: [
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+      isAMRAP: true,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 72.5,
+    ),
+  ],
+);
+
+RepScheme t2LowerBodyDayTwo = RepScheme(
+  sets: [
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 75,
+    ),
+    Set(
+      reps: 3,
+      percentageOfTrainingMax: 75,
     ),
   ],
 );
